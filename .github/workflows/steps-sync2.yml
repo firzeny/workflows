@@ -2,9 +2,10 @@ name: Nightly Garmin steps → Notion @ 00:05 Europe/London
 
 on:
   schedule:
-    # CRON is UTC. Two rules keep it near 00:05 London across DST.
-    - cron: "5 0 * 10-3 *"   # Oct–Mar: 00:05 UTC ≈ 00:05 London (winter)
-    - cron: "5 23 * 4-9 *"   # Apr–Sep: 23:05 UTC ≈ 00:05 London (summer)
+    # Oct–Mar (months 10,11,12,1,2,3): 00:05 UTC ≈ 00:05 London in winter
+    - cron: "5 0 * 10,11,12,1,2,3 *"
+    # Apr–Sep (months 4–9): 23:05 UTC ≈ 00:05 London in summer (BST)
+    - cron: "5 23 * 4,5,6,7,8,9 *"
   workflow_dispatch: {}
 
 jobs:
