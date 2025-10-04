@@ -2,9 +2,9 @@ name: Nightly Garmin steps → Notion @ 00:05 Europe/London
 
 on:
   schedule:
-    # Oct–Mar (months 10,11,12,1,2,3): 00:05 UTC ≈ 00:05 London in winter
+    # Oct–Mar (months 10,11,12,1,2,3): 00:05 UTC ≈ 00:05 London (winter)
     - cron: "5 0 * 10,11,12,1,2,3 *"
-    # Apr–Sep (months 4–9): 23:05 UTC ≈ 00:05 London in summer (BST)
+    # Apr–Sep (months 4–9): 23:05 UTC ≈ 00:05 London (summer)
     - cron: "5 23 * 4,5,6,7,8,9 *"
   workflow_dispatch: {}
 
@@ -32,10 +32,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # If you have requirements.txt at repo root, use that instead:
-          # pip install -r requirements.txt
           pip install garminconnect notion-client python-dotenv
 
       - name: Run script
-        run: |
-          python workflows/steps.py
+        run: python workflows/steps.py
