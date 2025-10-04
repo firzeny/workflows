@@ -1,0 +1,37 @@
+name: step-sync @ 00:05 Europe/London
+
+on:
+  schedule:
+    # CRON runs in UTC. 00:05 Europe/London = 23:05 UTC during BST, 00:05 UTC during winter.
+    - cron: "5 0 * 10-3 *"     # Oct–Mar: run 00:05 UTC (≈ 00:05 London in winter)
+    - cron: "5 23 * 4-9 *"     # Apr–Sep: run 23:05 UTC (≈ 00:05 London in summer)
+  workflow_dispatch: {}         # allow manual run
+
+jobs:
+  run-python:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      # Change scripts/sync.py to your actual script path.
+      - name: Run script
+        env:
+          # Optional: add secrets here if your script needs them
+          # EXAMPLE_SECRET: $ secrets.EXAMPLE_SECRET 
+          # NOTION_TOKEN: $ secrets.NOTION_TOKEN 
+        run: |
+          python scripts/sync.py
